@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Layout, Typography, Button, Space, Card, Row, Col, Select, Form, Progress, Table, Divider } from 'antd';
 import { Lunar } from 'lunar-javascript';
 import './App.css';
+import EnergyDNA from './components/EnergyDNA';
 
 const { Header, Content } = Layout;
 const { Title, Text } = Typography;
@@ -798,6 +799,14 @@ function App() {
                           </Col>
                         </Row>
                       </Card>
+                    )}
+                    
+                    {/* 能量DNA图谱 */}
+                    {bazi && currentBazi && (
+                      <EnergyDNA
+                        birthStats={calculateFiveElementsStats(bazi)}
+                        currentStats={calculateFiveElementsStats(currentBazi)}
+                      />
                     )}
                   </>
                 )}
