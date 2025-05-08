@@ -134,7 +134,50 @@ const EnergyDNA: React.FC<EnergyDNAProps> = ({ birthStats, currentStats }) => {
         const leftX = centerX + Math.sin(progress * Math.PI * 3 - time) * amplitude;
         const rightX = centerX + Math.sin(progress * Math.PI * 3 - time + Math.PI) * amplitude;
 
-        // 绘制先天能量球（圆形）
+        // 绘制先天能量球（珠子）
+        const radius = (element.percentage / 100) * 12 + 4;
+        
+        // 添加发光效果
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = FIVE_ELEMENTS_COLORS[element.element as keyof typeof FIVE_ELEMENTS_COLORS];
+        
+        // 创建径向渐变
+        const grd = ctx.createRadialGradient(
+          leftX - radius/3, y - radius/3, 0,  // 内圆中心点和半径
+          leftX, y, radius  // 外圆中心点和半径
+        );
+        grd.addColorStop(0, '#ffffff');  // 中心点为白色
+        grd.addColorStop(0.2, FIVE_ELEMENTS_COLORS[element.element as keyof typeof FIVE_ELEMENTS_COLORS]);
+        grd.addColorStop(1, FIVE_ELEMENTS_COLORS[element.element as keyof typeof FIVE_ELEMENTS_COLORS]);
+        
+        // 绘制实心圆
+        ctx.beginPath();
+        ctx.arc(leftX, y, radius, 0, Math.PI * 2);
+        ctx.fillStyle = grd;
+        ctx.fill();
+        
+        // 添加高光效果
+        ctx.beginPath();
+        ctx.arc(leftX - radius/3, y - radius/3, radius/4, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.fill();
+
+        // 添加能量场效果
+        const glowGrd = ctx.createRadialGradient(leftX, y, 0, leftX, y, radius * 2);
+        glowGrd.addColorStop(0, `${FIVE_ELEMENTS_COLORS[element.element as keyof typeof FIVE_ELEMENTS_COLORS]}22`);
+        glowGrd.addColorStop(1, 'transparent');
+        ctx.fillStyle = glowGrd;
+        ctx.beginPath();
+        ctx.arc(leftX, y, radius * 2, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // 绘制当下能量球（带圈的珠子）
+      currentElements.forEach((element, index) => {
+        const progress = (index * currentSpacing) / points;
+        const y = startY + progress * dnaLength;
+        const rightX = centerX + Math.sin(progress * Math.PI * 3 - time + Math.PI) * amplitude;
+
         const radius = (element.percentage / 100) * 12 + 4;
         
         // 添加发光效果
@@ -143,60 +186,39 @@ const EnergyDNA: React.FC<EnergyDNAProps> = ({ birthStats, currentStats }) => {
         
         // 绘制外环
         ctx.beginPath();
-        ctx.arc(leftX, y, radius + 2, 0, Math.PI * 2);
-        ctx.strokeStyle = '#fff';
-        ctx.lineWidth = 1;
+        ctx.arc(rightX, y, radius + 2, 0, Math.PI * 2);
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2;
         ctx.stroke();
+        
+        // 创建径向渐变
+        const grd = ctx.createRadialGradient(
+          rightX - radius/3, y - radius/3, 0,  // 内圆中心点和半径
+          rightX, y, radius  // 外圆中心点和半径
+        );
+        grd.addColorStop(0, '#ffffff');  // 中心点为白色
+        grd.addColorStop(0.2, FIVE_ELEMENTS_COLORS[element.element as keyof typeof FIVE_ELEMENTS_COLORS]);
+        grd.addColorStop(1, FIVE_ELEMENTS_COLORS[element.element as keyof typeof FIVE_ELEMENTS_COLORS]);
         
         // 绘制实心圆
         ctx.beginPath();
-        ctx.arc(leftX, y, radius, 0, Math.PI * 2);
-        ctx.fillStyle = FIVE_ELEMENTS_COLORS[element.element as keyof typeof FIVE_ELEMENTS_COLORS];
-        ctx.globalAlpha = 0.8;
+        ctx.arc(rightX, y, radius, 0, Math.PI * 2);
+        ctx.fillStyle = grd;
         ctx.fill();
-        ctx.globalAlpha = 1;
+        
+        // 添加高光效果
+        ctx.beginPath();
+        ctx.arc(rightX - radius/3, y - radius/3, radius/4, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+        ctx.fill();
 
         // 添加能量场效果
-        const grd = ctx.createRadialGradient(leftX, y, 0, leftX, y, radius * 2.5);
-        grd.addColorStop(0, `${FIVE_ELEMENTS_COLORS[element.element as keyof typeof FIVE_ELEMENTS_COLORS]}33`);
-        grd.addColorStop(1, 'transparent');
-        ctx.fillStyle = grd;
+        const glowGrd = ctx.createRadialGradient(rightX, y, 0, rightX, y, radius * 2.5);
+        glowGrd.addColorStop(0, `${FIVE_ELEMENTS_COLORS[element.element as keyof typeof FIVE_ELEMENTS_COLORS]}33`);
+        glowGrd.addColorStop(1, 'transparent');
+        ctx.fillStyle = glowGrd;
         ctx.beginPath();
-        ctx.arc(leftX, y, radius * 2.5, 0, Math.PI * 2);
-        ctx.fill();
-      });
-
-      // 绘制当下能量球（方形）
-      currentElements.forEach((element, index) => {
-        const progress = (index * currentSpacing) / points;
-        const y = startY + progress * dnaLength;
-        const rightX = centerX + Math.sin(progress * Math.PI * 3 - time + Math.PI) * amplitude;
-
-        const size = (element.percentage / 100) * 20 + 8;
-        
-        // 添加发光效果
-        ctx.shadowBlur = 15;
-        ctx.shadowColor = FIVE_ELEMENTS_COLORS[element.element as keyof typeof FIVE_ELEMENTS_COLORS];
-        
-        // 绘制外框
-        ctx.beginPath();
-        ctx.strokeStyle = '#fff';
-        ctx.lineWidth = 1;
-        ctx.strokeRect(rightX - size/2 - 2, y - size/2 - 2, size + 4, size + 4);
-        
-        // 绘制实心方形
-        ctx.fillStyle = FIVE_ELEMENTS_COLORS[element.element as keyof typeof FIVE_ELEMENTS_COLORS];
-        ctx.globalAlpha = 0.8;
-        ctx.fillRect(rightX - size/2, y - size/2, size, size);
-        ctx.globalAlpha = 1;
-
-        // 添加能量场效果
-        const grd = ctx.createRadialGradient(rightX, y, 0, rightX, y, size * 1.5);
-        grd.addColorStop(0, `${FIVE_ELEMENTS_COLORS[element.element as keyof typeof FIVE_ELEMENTS_COLORS]}33`);
-        grd.addColorStop(1, 'transparent');
-        ctx.fillStyle = grd;
-        ctx.beginPath();
-        ctx.arc(rightX, y, size * 1.5, 0, Math.PI * 2);
+        ctx.arc(rightX, y, radius * 2.5, 0, Math.PI * 2);
         ctx.fill();
       });
 
