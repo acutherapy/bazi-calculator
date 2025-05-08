@@ -3,6 +3,7 @@ import { Layout, Typography, Button, Space, Card, Row, Col, Select, Form, Progre
 import { Lunar } from 'lunar-javascript';
 import './App.css';
 import EnergyDNA from './components/EnergyDNA';
+import { FIVE_ELEMENTS_COLORS } from './constants';
 
 const { Header, Content } = Layout;
 const { Title, Text } = Typography;
@@ -74,15 +75,6 @@ interface BaziResult {
     hour: [string, string];
   };
 }
-
-// 五行颜色映射
-const FIVE_ELEMENTS_COLORS = {
-  '木': '#52c41a',
-  '火': '#f5222d',
-  '土': '#faad14',
-  '金': '#1890ff',
-  '水': '#722ed1'
-} as const;
 
 // 五行理想比例
 const IDEAL_RATIO = 0.2; // 20%
@@ -618,7 +610,7 @@ function App() {
                                       width: '12px',
                                       height: '12px',
                                       backgroundColor: FIVE_ELEMENTS_COLORS[element as keyof typeof FIVE_ELEMENTS_COLORS],
-                                      borderRadius: '0',
+                                      borderRadius: '50%',
                                       marginRight: '4px',
                                       display: 'inline-block'
                                     }}
@@ -669,7 +661,7 @@ function App() {
                                               width: '12px',
                                               height: '12px',
                                               backgroundColor: FIVE_ELEMENTS_COLORS[element as keyof typeof FIVE_ELEMENTS_COLORS],
-                                              borderRadius: '0',
+                                              borderRadius: '50%',
                                               marginRight: '4px',
                                               display: 'inline-block'
                                             }}
@@ -785,8 +777,8 @@ function App() {
                                     </Text>
                                   </div>
                                   {deviations.map(({ element, deviationPercentage, status }) => (
-                                    <div key={element} style={{ marginBottom: '8px' }}>
-                                      <Text style={{ width: '60px', display: 'inline-block' }}>{element}：</Text>
+                                    <div key={element} style={{ marginBottom: '16px' }}>
+                                      <Text style={{ width: '60px' }}>{element}：</Text>
                                       <Text type={status === '平衡' ? 'success' : 
                                                (status === '略多' || status === '略少') ? 'warning' : 'danger'}>
                                         {status}（{deviationPercentage > 0 ? '+' : ''}{deviationPercentage}%）
