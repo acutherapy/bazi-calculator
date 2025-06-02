@@ -530,7 +530,7 @@ function App() {
           <Col span={12} style={{ minWidth: '700px' }}>
             <Card bordered={false} style={{ height: '100%' }}>
               <Space direction="vertical" size="large" style={{ width: '100%' }}>
-                <Title level={3} style={{ margin: '0 0 24px 0', textAlign: 'center' }}>当下能量流图</Title>
+                <Title level={3} style={{ margin: '0 0 24px 0', textAlign: 'center' }}>当下八字</Title>
                 
                 {/* 当前时间显示 */}
                 <Card title="当前日期与时辰" bordered={false} style={{ marginBottom: '24px', minHeight: '183px' }}>
