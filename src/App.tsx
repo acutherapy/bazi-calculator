@@ -382,7 +382,7 @@ function App() {
                   disabled={!selectedDate}
                   style={{ width: '200px', margin: '0 auto 24px', display: 'block' }}
                 >
-                  生成先天能量流图
+                  生成先天八字
                 </Button>
 
                 {/* 八字显示区域 */}
